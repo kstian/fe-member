@@ -1,89 +1,92 @@
 <script setup>
-import { computed, ref } from 'vue';
-import { useStore } from 'vuex';
-import { mdiEye, mdiTrashCan } from '@mdi/js';
-import ModalBox from '@/components/ModalBox.vue';
-import CheckboxCell from '@/components/CheckboxCell.vue';
-import Level from '@/components/Level.vue';
-import JbButtons from '@/components/JbButtons.vue';
-import JbButton from '@/components/JbButton.vue';
-import UserAvatar from '@/components/UserAvatar.vue';
+import { computed, ref } from 'vue'
+import { useStore } from 'vuex'
+import { mdiEye, mdiTrashCan } from '@mdi/js'
+import ModalBox from '@/components/ModalBox.vue'
+import CheckboxCell from '@/components/CheckboxCell.vue'
+import Level from '@/components/Level.vue'
+import JbButtons from '@/components/JbButtons.vue'
+import JbButton from '@/components/JbButton.vue'
+import UserAvatar from '@/components/UserAvatar.vue'
 
 defineProps({
-  checkable: Boolean,
-});
+  checkable: Boolean
+})
 
-const store = useStore();
+const store = useStore()
 
-const lightBorderStyle = computed(() => store.state.lightBorderStyle);
+const lightBorderStyle = computed(() => store.state.lightBorderStyle)
 
-const lightBgStyle = computed(() => store.state.lightBgStyle);
+const lightBgStyle = computed(() => store.state.lightBgStyle)
 
-const tableTrStyle = computed(() => store.state.tableTrStyle);
+const tableTrStyle = computed(() => store.state.tableTrStyle)
 
-const tableTrOddStyle = computed(() => store.state.tableTrOddStyle);
+const tableTrOddStyle = computed(() => store.state.tableTrOddStyle)
 
-const darkMode = computed(() => store.state.darkMode);
+const darkMode = computed(() => store.state.darkMode)
 
-const items = computed(() => store.state.clients);
+const items = computed(() => store.state.clients)
 
-const isModalActive = ref(false);
+const isModalActive = ref(false)
 
-const isModalDangerActive = ref(false);
+const isModalDangerActive = ref(false)
 
-const perPage = ref(10);
+const perPage = ref(10)
 
-const currentPage = ref(0);
+const currentPage = ref(0)
 
-const checkedRows = ref([]);
+const checkedRows = ref([])
 
 const itemsPaginated = computed(() =>
   items.value.slice(
     perPage.value * currentPage.value,
     perPage.value * (currentPage.value + 1)
   )
-);
+)
 
-const numPages = computed(() => Math.ceil(items.value.length / perPage.value));
+const numPages = computed(() => Math.ceil(items.value.length / perPage.value))
 
-const currentPageHuman = computed(() => currentPage.value + 1);
+const currentPageHuman = computed(() => currentPage.value + 1)
 
 const pagesList = computed(() => {
-  const pagesList = [];
+  const pagesList = []
 
   for (let i = 0; i < numPages.value; i++) {
-    pagesList.push(i);
+    pagesList.push(i)
   }
 
-  return pagesList;
-});
+  return pagesList
+})
 
 const remove = (arr, cb) => {
-  const newArr = [];
+  const newArr = []
 
   arr.forEach((item) => {
     if (!cb(item)) {
-      newArr.push(item);
+      newArr.push(item)
     }
-  });
+  })
 
-  return newArr;
-};
+  return newArr
+}
 
 const checked = (isChecked, client) => {
   if (isChecked) {
-    checkedRows.value.push(client);
+    checkedRows.value.push(client)
   } else {
     checkedRows.value = remove(
       checkedRows.value,
       (row) => row.id === client.id
-    );
+    )
   }
-};
+}
 </script>
 
 <template>
-  <modal-box v-model="isModalActive" title="Sample modal">
+  <modal-box
+    v-model="isModalActive"
+    title="Sample modal"
+  >
     <p>Lorem ipsum dolor sit amet <b>adipiscing elit</b></p>
     <p>This is sample modal</p>
   </modal-box>
@@ -132,9 +135,15 @@ const checked = (isChecked, client) => {
         :key="client.id"
         :class="[tableTrStyle, index % 2 === 0 ? tableTrOddStyle : '']"
       >
-        <checkbox-cell v-if="checkable" @checked="checked($event, client)" />
+        <checkbox-cell
+          v-if="checkable"
+          @checked="checked($event, client)"
+        />
         <td class="image-cell">
-          <user-avatar :username="client.name" class="image" />
+          <user-avatar
+            :username="client.name"
+            class="image"
+          />
         </td>
         <td data-label="Name">
           {{ client.name }}
@@ -145,8 +154,14 @@ const checked = (isChecked, client) => {
         <td data-label="City">
           {{ client.city }}
         </td>
-        <td data-label="Progress" class="progress-cell">
-          <progress max="100" :value="client.progress">
+        <td
+          data-label="Progress"
+          class="progress-cell"
+        >
+          <progress
+            max="100"
+            :value="client.progress"
+          >
             {{ client.progress }}
           </progress>
         </td>
@@ -154,11 +169,13 @@ const checked = (isChecked, client) => {
           <small
             class="text-gray-500 dark:text-gray-400"
             :title="client.created"
-            >{{ client.created }}</small
-          >
+          >{{ client.created }}</small>
         </td>
         <td class="actions-cell">
-          <jb-buttons type="justify-start lg:justify-end" no-wrap>
+          <jb-buttons
+            type="justify-start lg:justify-end"
+            no-wrap
+          >
             <jb-button
               color="info"
               :icon="mdiEye"
