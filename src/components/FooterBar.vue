@@ -36,4 +36,3 @@ const isFooterBarVisible = computed(() => !store.state.isFullScreen)
     </level>
   </footer>
 </template>
-
