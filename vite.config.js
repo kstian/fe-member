@@ -12,7 +12,7 @@ export default defineConfig({
       exposes: {
         './MemberTable': './src/components/MemberTable.vue'
       },
-      shared: ['vue']
+      shared: ['vue', 'vuex']
     })
   ],
   resolve: {
